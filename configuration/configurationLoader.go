@@ -19,16 +19,16 @@ func NewConfigLoader() *configurationLoder {
 
 func (c configurationLoder) Load(fileName string, filePath string) (ConfigData, error) {
 	var configData ConfigData
-	jsonfile, e := os.Open(fileName)
+	jsonfile, jsonOpenError := os.Open(fileName)
 
-	if e != nil {
-		return configData, e
+	if jsonOpenError != nil {
+		return configData, jsonOpenError
 	}
 	defer jsonfile.Close()
 
-	byteValue, err := ioutil.ReadAll(jsonfile)
-	if err != nil {
-		return configData, err
+	byteValue, jsonReadError := ioutil.ReadAll(jsonfile)
+	if jsonReadError != nil {
+		return configData, jsonReadError
 	}
 	json.Unmarshal(byteValue, &configData)
 	return configData, nil
