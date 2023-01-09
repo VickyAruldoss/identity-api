@@ -20,6 +20,15 @@ func (suite *ConfigurationLoaderTestSuite) SetupTest() {
 }
 
 func (s *ConfigurationLoaderTestSuite) TestShouldCallLoadTheConfigurationFromConfigJSON() {
-	data := s.ConfigurationLoader.Load()
-	s.Suite.Equal("this is to test the config json loader", data)
+	expectedConfig := ConfigData{
+		Environment: "DEV",
+		Port:        "3000",
+	}
+	data, _ := s.ConfigurationLoader.Load("config.json", "")
+	s.Suite.Equal(expectedConfig, data)
+}
+
+func (s *ConfigurationLoaderTestSuite) TestShouldThrowErrorWhenTheFileDoesnotExists() {
+	_, err := s.ConfigurationLoader.Load("test.json", "")
+	s.Suite.NotNil(err)
 }
